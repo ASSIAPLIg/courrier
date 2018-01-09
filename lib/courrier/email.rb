@@ -1,10 +1,6 @@
 module Courrier
   class Email
     extend ActiveModel::Callbacks
-    # include UrlGeneration
-    # include SslHelper
-    # include EmailUrlOptions
-
     define_model_callbacks :initialize, only: :after
 
     class_attribute :required_keys
@@ -22,8 +18,6 @@ module Courrier
     self.default_delivery_keys = [
       :show_call_to_action
     ]
-
-    # delegate :localized_date_time, to: DateTimeFormatHelper
 
     # Public: Specify an instance method that returns a user
     # or email address to whom the email should be delivered.
@@ -130,46 +124,8 @@ module Courrier
       'false'
     end
 
-    def support_email
-      # EmailAddress[:support].to_s
-    end
-
     def delivery_keys
       (default_delivery_keys + self.class.delivery_keys).uniq
-    end
-
-    def image_url(path)
-      ActionController::Base.helpers.image_url(path, host: root_url)
-    end
-
-    private
-
-    def localized_date_time(dtime, zone = nil)
-      formatted_date_time localize_time(dtime, zone) if dtime
-    end
-
-    def localize_time(time, zone = nil)
-      return time if time.nil? || zone.nil?
-
-      time.in_time_zone(zone)
-    end
-
-    def formatted_date_time(datetime)
-      "#{formatted_date datetime} #{formatted_time datetime}"
-    end
-
-    def formatted_date(date)
-      date.strftime('%b %d, %Y')
-    end
-
-    def formatted_time(time, something = nil)
-      offset = time.gmtoff / 3600
-
-      if offset >= -8 && offset <= -4 # Show timezone name in US
-        time.strftime('%I:%M %p %Z')
-      else
-        time.strftime('%H:%M') + " GMT" + (offset < 0 ? "-" : "+") + offset.abs.to_s + ":00"
-      end
     end
   end
 
