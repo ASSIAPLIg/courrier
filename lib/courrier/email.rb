@@ -78,7 +78,7 @@ module Courrier
     def recipient
       return Settings.interceptor_emails.first if Settings.interceptor_emails.any?
       method = self.class.recipient_method
-      raise Notifier::RecipientUndefinedError.new("Please declare a recipient in #{self.class.name}") if method.nil? || !self.respond_to?(method, true)
+      raise Courrier::RecipientUndefinedError.new("Please declare a recipient in #{self.class.name}") if method.nil? || !self.respond_to?(method, true)
       send(method)
     end
 
@@ -95,7 +95,7 @@ module Courrier
             if respond_to?(attribute)
               raise e
             else
-              raise Notifier::DeliveredAttributeError.new("#{self.class.name} #{e}")
+              raise Courrier::DeliveredAttributeError.new("#{self.class.name} #{e}")
             end
           end
         end
@@ -109,7 +109,7 @@ module Courrier
           instance_variable_set("@#{attribute}", attrs.fetch(attribute))
         end
       rescue KeyError => e
-        raise Notifier::RequiredAttributeError.new("#{self.class.name} #{e}")
+        raise Courrier::RequiredAttributeError.new("#{self.class.name} #{e}")
       end
 
       # Set optional attributes via attr_writer
