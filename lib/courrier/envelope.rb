@@ -4,8 +4,6 @@ module Courrier
 
     delegate :recipient, :payload, to: :email
 
-    class_attribute :mailer
-
     def initialize(email_name, attributes = {})
       @email_name, @attributes = email_name, attributes
     end
@@ -16,9 +14,9 @@ module Courrier
 
         case recipient
         when User
-          mailer.transactional_email_to_user(*args)
+          Courrier.configuration.mailer.transactional_email_to_user(*args)
         else
-          mailer.transactional_email_to_address(*args)
+          Courrier.configuration.mailer.transactional_email_to_address(*args)
         end
         log args.inspect
       end
