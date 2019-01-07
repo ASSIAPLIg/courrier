@@ -12,8 +12,7 @@ module Courrier
       log "Delivering #{email_name} to #{recipient_email}"
       payload.tap do |args|
 
-        case recipient
-        when User
+        if Object.const_defined? 'User' and recipient.kind_of?(User)
           Courrier.configuration.mailer.transactional_email_to_user(*args)
         else
           Courrier.configuration.mailer.transactional_email_to_address(*args)
