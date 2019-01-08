@@ -70,7 +70,7 @@ module Courrier
     end
 
     def recipient
-      return Courrier.configuration.interceptor_email if Courrier.configuration.present?
+      return Courrier.configuration.interceptor_email if Courrier.configuration.interceptor_email.present?
       method = self.class.recipient_method
       raise Courrier::RecipientUndefinedError.new("Please declare a recipient in #{self.class.name}") if method.nil? || !self.respond_to?(method, true)
       send(method)
