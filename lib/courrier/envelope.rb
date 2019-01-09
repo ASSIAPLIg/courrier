@@ -12,7 +12,7 @@ module Courrier
       log "Delivering #{email_name} to #{recipient_email}"
       payload.tap do |args|
 
-        if is_user?(recipient)
+        if emailable?(recipient)
           Courrier.configuration.mailer.transactional_email_to_user(*args)
         else
           Courrier.configuration.mailer.transactional_email_to_address(*args)
