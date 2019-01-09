@@ -34,7 +34,7 @@ module Courrier
     end
 
     def recipient_email
-      if is_user?(recipient)
+      if emailable?(recipient)
         recipient.email
       else
         recipient
@@ -49,8 +49,8 @@ module Courrier
       Rails.logger.info "#{self.class.name} -- #{info}"
     end
 
-    def is_user?(recipient)
-      Object.const_defined? 'User' and recipient.kind_of?(User)
+    def emailable?(recipient)
+      recipient.respond_to? :email
     end
 
   end
