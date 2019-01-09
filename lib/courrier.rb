@@ -1,7 +1,4 @@
-require "courrier/version"
-require "courrier/envelope"
-require "courrier/email"
-require "courrier/configuration"
+Dir.glob(File.join('courrier', '**', '*.rb'), &method(:require))
 
 module Courrier
   class << self
