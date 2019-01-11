@@ -2,6 +2,7 @@ require "courrier/version"
 require "courrier/envelope"
 require "courrier/email"
 require "courrier/configuration"
+require "courrier/notifier"
 
 module Courrier
   class << self

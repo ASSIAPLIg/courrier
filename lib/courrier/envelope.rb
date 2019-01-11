@@ -12,8 +12,7 @@ module Courrier
       log "Delivering #{email_name} to #{recipient_email}"
       payload.tap do |args|
 
-        case recipient
-        when User
+        if emailable?(recipient)
           Courrier.configuration.mailer.transactional_email_to_user(*args)
         else
           Courrier.configuration.mailer.transactional_email_to_address(*args)
@@ -35,8 +34,7 @@ module Courrier
     end
 
     def recipient_email
-      case recipient
-      when User
+      if emailable?(recipient)
         recipient.email
       else
         recipient
@@ -49,6 +47,10 @@ module Courrier
 
     def log(info)
       Rails.logger.info "#{self.class.name} -- #{info}"
+    end
+
+    def emailable?(recipient)
+      recipient.respond_to? :email
     end
 
   end
